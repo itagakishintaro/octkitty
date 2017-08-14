@@ -1,0 +1,67 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="get-metrics">
+    <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+      .indigo {
+        background-color: #3F51B5;
+        color: white;
+        font-weight: lighter;
+      }
+      :host {
+        --paper-input-container-input: {
+          font-size: 2rem;
+        };
+      }
+    </style>
+
+    <section class="card">
+      <h1>Get Metrics</h1>
+      <paper-input label="repository name" id="repoName"></paper-input>
+      <paper-button raised class="indigo" on-click="search">search</paper-button>
+    </section>
+  </template>
+
+    <script>
+        class GetMetrics extends Polymer.Element {
+            static get is() {
+                return 'get-metrics';
+            }
+            search() {
+                console.log(this.$.repoName.value);
+                const url = 'https://api.github.com/search/repositories';
+
+                // const uri = 'https://api.github.com/repos/EventStore/EventStore/stargazers';
+                fetch(url + '?q=' + this.$.repoName.value)
+                    .then(res => {
+                        return res.text();
+                    })
+                    .then(text => {
+                        console.log(text)
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        }
+
+        window.customElements.define(GetMetrics.is, GetMetrics);
+    </script>
+</dom-module>
