@@ -1,0 +1,79 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="search-repo">
+    <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+      .indigo {
+        background-color: #3F51B5;
+        color: white;
+        font-weight: lighter;
+      }
+      :host {
+        --paper-input-container-input: {
+          font-size: 2rem;
+        };
+      }
+    </style>
+
+    <section class="card">
+      <h1>Search Repository</h1>
+      <paper-input label="repository name" id="repoName"></paper-input>
+      <paper-button raised class="indigo" on-click="search">search</paper-button>
+      <template is="dom-repeat" items="[[repos]]">
+        <ul>
+          <a href="get-metrics/{{item.full_name}}"><li>{{item.full_name}}</li></a>
+        </ul>
+      </template>
+    </section>
+    </template>
+
+    <script>
+        class SearchRepo extends Polymer.Element {
+            static get is() {
+                return 'search-repo';
+            }
+
+            constructor() {
+                super();
+                this.repos = [];
+            }
+
+            search() {
+                console.log(this.$.repoName.value);
+                const url = 'https://api.github.com/search/repositories';
+
+                // const uri = 'https://api.github.com/repos/EventStore/EventStore/stargazers';
+                fetch(url + '?q=' + this.$.repoName.value)
+                    .then(res => {
+                        return res.json();
+                    })
+                    .then(json => {
+                        console.log(json);
+                        let repos = json.items.map(v => {
+                            return {
+                                full_name: v.full_name,
+                                html_url: v.html_url
+                            };
+                        });
+                        this.addRepos(repos);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+
+            addRepos(repos) {
+                this.set('repos', repos);
+            }
+        }
+
+        window.customElements.define(SearchRepo.is, SearchRepo);
+    </script>
+</dom-module>
