@@ -23,8 +23,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="my-icons.html">
 
 <link rel="lazy-import" href="search-repo.html">
-<link rel="lazy-import" href="get-metrics.html">
-<link rel="lazy-import" href="my-view3.html">
+<link rel="lazy-import" href="oss-info.html">
+<link rel="lazy-import" href="search-startup.html">
 <link rel="lazy-import" href="my-view404.html">
 
 <dom-module id="my-app">
@@ -81,8 +81,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="search-repo" href="[[rootPath]]search-repo">Search Repo</a>
-          <a name="get-metrics" href="[[rootPath]]get-metrics">Get Metrics</a>
-          <a name="view3" href="[[rootPath]]view3">View Three</a>
+          <a name="oss-info" href="[[rootPath]]oss-info">OSS Info</a>
+          <!-- <a name="search-startup" href="[[rootPath]]search-startup">Search Startup</a> -->
         </iron-selector>
       </app-drawer>
 
@@ -102,8 +102,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             fallback-selection="view404"
             role="main">
           <search-repo name="search-repo"></search-repo>
-          <get-metrics name="get-metrics"></get-metrics>
-          <my-view3 name="my-view3"></my-view3>
+          <oss-info name="oss-info"></oss-info>
+          <search-startup name="search-startup"></search-startup>
           <my-view404 name="my-view404"></my-view404>
         </iron-pages>
       </app-header-layout>
@@ -111,6 +111,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
     <script>
+        const TOKEN = 'e641aa10280a559bec2c9e0f3e33e876720bb76f';
+        let baseHeaders = new Headers().append('Authorization', 'token ' + TOKEN);
         class MyApp extends Polymer.Element {
             static get is() {
                 return 'my-app';

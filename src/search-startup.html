@@ -3,7 +3,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="shared-styles.html">
 
-<dom-module id="search-repo">
+<dom-module id="search-startup">
     <template>
     <style include="shared-styles">
       :host {
@@ -23,59 +23,56 @@
     </style>
 
     <section class="card">
-      <h1>Search Repository</h1>
-      <paper-input label="repository name" id="repoName"></paper-input>
+      <h1>Search Startup</h1>
+      <paper-input label="startup name" id="startupName"></paper-input>
       <paper-button raised class="indigo" on-click="search">search</paper-button>
-      <template is="dom-repeat" items="[[repos]]">
+      <template is="dom-repeat" items="[[startups]]">
         <ul>
-          <a href="oss-info/{{item.full_name}}"><li>{{item.full_name}}</li></a>
+          <a href="startup-info/{{item.full_name}}"><li>{{item.full_name}}</li></a>
         </ul>
       </template>
     </section>
     </template>
 
     <script>
-        class SearchRepo extends Polymer.Element {
+        class SearchStartup extends Polymer.Element {
             static get is() {
-                return 'search-repo';
+                return 'search-startup';
             }
 
             constructor() {
                 super();
-                this.repos = [];
+                this.startups = [];
             }
 
             search() {
-                console.log(this.$.repoName.value);
-                const url = 'https://api.github.com/search/repositories';
+                console.log(this.$.startupName.value);
+                const url = '';
 
-                // const uri = 'https://api.github.com/repos/EventStore/EventStore/stargazers';
-                fetch(url + '?q=' + this.$.repoName.value, {
-                        headers: baseHeaders
-                    })
+                fetch(url + '?q=' + this.$.startupName.value)
                     .then(res => {
                         return res.json();
                     })
                     .then(json => {
                         console.log(json);
-                        let repos = json.items.map(v => {
+                        let startups = json.items.map(v => {
                             return {
                                 full_name: v.full_name,
                                 html_url: v.html_url
                             };
                         });
-                        this.addRepos(repos);
+                        this.addRepos(startups);
                     })
                     .catch(error => {
                         console.error(error);
                     });
             }
 
-            addRepos(repos) {
-                this.set('repos', repos);
+            addStartups(startups) {
+                this.set('startups', startups);
             }
         }
 
-        window.customElements.define(SearchRepo.is, SearchRepo);
+        window.customElements.define(SearchStartup.is, SearchStartup);
     </script>
 </dom-module>
